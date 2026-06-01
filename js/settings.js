@@ -49,13 +49,6 @@ const Settings = {
     this.save();
   },
 
-  setTheme(theme) {
-    this.current.theme = theme;
-    document.documentElement.setAttribute('data-theme', theme);
-    this.updateSettingsUI();
-    this.save();
-  },
-
   setBoardColor(color) {
     this.current.boardColor = color;
     document.documentElement.setAttribute('data-board', color);
@@ -79,17 +72,6 @@ const Settings = {
   },
 
   updateSettingsUI() {
-    // Theme toggle
-    const themeToggle = document.getElementById('theme-toggle');
-    if (themeToggle) {
-      themeToggle.checked = this.current.theme === 'light';
-    }
-    // Theme labels
-    document.querySelectorAll('.theme-label').forEach(el => {
-      const isDark = el.dataset.theme === 'dark';
-      el.classList.toggle('active', isDark ? this.current.theme === 'dark' : this.current.theme === 'light');
-    });
-
     // Sound toggle
     const soundToggle = document.getElementById('sound-toggle');
     if (soundToggle) {
@@ -161,18 +143,6 @@ const Settings = {
           <button class="modal-close" id="settings-close-btn">&times;</button>
         </div>
         <div class="settings-body">
-          <!-- Theme -->
-          <div class="setting-item">
-            <div class="setting-label">
-              <span data-i18n="settings.theme">${I18N.t('settings.theme')}</span>
-              <span data-i18n="settings.theme.desc">${I18N.t('settings.theme.desc')}</span>
-            </div>
-            <div class="lang-selector">
-              <button class="lang-option theme-label ${this.current.theme === 'dark' ? 'active' : ''}" data-theme="dark" data-i18n="settings.theme.dark">${I18N.t('settings.theme.dark')}</button>
-              <button class="lang-option theme-label ${this.current.theme === 'light' ? 'active' : ''}" data-theme="light" data-i18n="settings.theme.light">${I18N.t('settings.theme.light')}</button>
-            </div>
-          </div>
-
           <!-- Board Colors -->
           <div class="setting-item">
             <div class="setting-label">
@@ -221,13 +191,6 @@ const Settings = {
     modal.querySelector('#settings-close-btn').addEventListener('click', () => this.closeModal());
     modal.addEventListener('click', (e) => {
       if (e.target === modal) this.closeModal();
-    });
-
-    // Theme buttons
-    modal.querySelectorAll('.theme-label').forEach(btn => {
-      btn.addEventListener('click', () => {
-        this.setTheme(btn.dataset.theme);
-      });
     });
 
     // Board color options
