@@ -221,76 +221,148 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('floating-pieces');
   if (!container) return;
   
-  const pieces = ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'];
-  const count = 45; // Tăng mật độ cờ
-
-  const pieceElements = [];
-
-  for (let i = 0; i < count; i++) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'floating-piece-wrapper';
-    
-    const el = document.createElement('span');
-    el.className = 'floating-piece';
-    el.textContent = pieces[Math.floor(Math.random() * pieces.length)];
-    
-    wrapper.style.left = `${Math.random() * 100}%`;
-    wrapper.style.top = `${Math.random() * 100}%`;
-    wrapper.style.setProperty('--duration', `${15 + Math.random() * 15}s`);
-    wrapper.style.setProperty('--delay', `${Math.random() * -20}s`);
-    
-    // Random movement vectors
-    const moveX = (Math.random() - 0.5) * 200;
-    const moveY = (Math.random() - 0.5) * 200;
-    const rot = (Math.random() - 0.5) * 180;
-    
-    wrapper.style.setProperty('--move-x', `${moveX}px`);
-    wrapper.style.setProperty('--move-y', `${moveY}px`);
-    wrapper.style.setProperty('--rot', `${rot}deg`);
-    
-    el.style.fontSize = `${1.2 + Math.random() * 2}rem`;
-    
-    wrapper.appendChild(el);
-    container.appendChild(wrapper);
-    
-    pieceElements.push({ wrapper, el });
-  }
-
-  // Mouse repulsion effect
+  // Clear container
+  container.innerHTML = '';
+  
+  const piecesStr = ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'];
+  const count = 90; // Mật độ cờ dày hơn
+  const particles = [];
+  
   let mouseX = -1000;
   let mouseY = -1000;
   
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('span');
+    el.className = 'floating-piece-js';
+    el.textContent = piecesStr[Math.floor(Math.random() * piecesStr.length)];
+    el.style.fontSize = `${1.2 + Math.random() * 2}rem`;
+    container.appendChild(el);
+    
+    particles.push(spawnParticle(el, true));
+  }
+  
+  function spawnParticle(el, initial = false) {
+    const p = {
+      el: el,
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: 0,
+      vy: 0,
+      driftX: (Math.random() - 0.5) * 0.8,
+      driftY: (Math.random() - 0.5) * 0.8,
+      rot: Math.random() * 360,
+      rotV: (Math.random() - 0.5) * 1.5,
+      maxLife: 5000 + Math.random() * 2000, // 5s to 7s
+      age: initial ? Math.random() * 5000 : 0,
+      opacity: 0,
+      targetOpacity: 0.04 + Math.random() * 0.06,
+      state: initial ? 'alive' : 'fading_in'
+    };
+    if (initial) p.opacity = p.targetOpacity;
+    return p;
+  }
+  
+  // Track mouse
   document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
   });
   
-  function updateRepulsion() {
-    pieceElements.forEach(item => {
-      const rect = item.wrapper.getBoundingClientRect();
-      const pieceX = rect.left + rect.width / 2;
-      const pieceY = rect.top + rect.height / 2;
-      
-      const dx = pieceX - mouseX;
-      const dy = pieceY - mouseY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      const maxDist = 200; // Repulsion radius
-      
-      if (distance < maxDist && distance > 0) {
-        // Calculate force: closer = stronger push
-        const force = (maxDist - distance) / maxDist;
-        const pushX = (dx / distance) * force * 100; // max push 100px
-        const pushY = (dy / distance) * force * 100;
-        
-        item.el.style.transform = `translate(${pushX}px, ${pushY}px)`;
-      } else {
-        item.el.style.transform = `translate(0px, 0px)`;
+  document.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      mouseX = e.touches[0].clientX;
+      mouseY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+  
+  // Shockwave effect
+  function createShockwave(x, y) {
+    particles.forEach(p => {
+      const dx = p.x - x;
+      const dy = p.y - y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 350 && dist > 0) {
+        // Push outward (shockwave force)
+        const force = (350 - dist) / 350;
+        p.vx += (dx / dist) * force * 40; // Push strength
+        p.vy += (dy / dist) * force * 40;
       }
     });
-    
-    requestAnimationFrame(updateRepulsion);
   }
   
-  requestAnimationFrame(updateRepulsion);
+  document.addEventListener('mousedown', (e) => createShockwave(e.clientX, e.clientY));
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches.length > 0) {
+      mouseX = e.touches[0].clientX;
+      mouseY = e.touches[0].clientY;
+      createShockwave(mouseX, mouseY);
+    }
+  }, { passive: true });
+  
+  let lastTime = performance.now();
+  
+  function update() {
+    const now = performance.now();
+    const dt = now - lastTime;
+    lastTime = now;
+    
+    // Safety check for massive delta times (e.g., tab switched)
+    const timeScale = Math.min(dt / 16.66, 3);
+    
+    particles.forEach((p, i) => {
+      p.age += dt;
+      
+      // Lifecycle
+      if (p.state === 'fading_in') {
+        p.opacity += dt * 0.0005; // Fade in speed
+        if (p.opacity >= p.targetOpacity) {
+          p.opacity = p.targetOpacity;
+          p.state = 'alive';
+        }
+      } else if (p.state === 'alive') {
+        if (p.age > p.maxLife) {
+          p.state = 'fading_out';
+        }
+      } else if (p.state === 'fading_out') {
+        p.opacity -= dt * 0.0005;
+        if (p.opacity <= 0) {
+          particles[i] = spawnParticle(p.el, false);
+          return;
+        }
+      }
+      
+      // Fluid repulsion
+      const dx = p.x - mouseX;
+      const dy = p.y - mouseY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      
+      if (dist < 180 && dist > 0) {
+        const force = (180 - dist) / 180;
+        p.vx += (dx / dist) * force * 1.5 * timeScale;
+        p.vy += (dy / dist) * force * 1.5 * timeScale;
+      }
+      
+      // Friction (Water-like damping)
+      p.vx *= Math.pow(0.9, timeScale);
+      p.vy *= Math.pow(0.9, timeScale);
+      
+      // Update position
+      p.x += (p.driftX + p.vx) * timeScale;
+      p.y += (p.driftY + p.vy) * timeScale;
+      p.rot += p.rotV * timeScale;
+      
+      // Screen wrapping
+      if (p.x < -100) p.x = window.innerWidth + 100;
+      if (p.x > window.innerWidth + 100) p.x = -100;
+      if (p.y < -100) p.y = window.innerHeight + 100;
+      if (p.y > window.innerHeight + 100) p.y = -100;
+      
+      p.el.style.transform = `translate(${p.x}px, ${p.y}px) rotate(${p.rot}deg)`;
+      p.el.style.opacity = p.opacity;
+    });
+    
+    requestAnimationFrame(update);
+  }
+  
+  requestAnimationFrame(update);
 });
