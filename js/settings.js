@@ -222,27 +222,75 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!container) return;
   
   const pieces = ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'];
-  const count = 20;
+  const count = 45; // Tăng mật độ cờ
+
+  const pieceElements = [];
 
   for (let i = 0; i < count; i++) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'floating-piece-wrapper';
+    
     const el = document.createElement('span');
     el.className = 'floating-piece';
     el.textContent = pieces[Math.floor(Math.random() * pieces.length)];
-    el.style.left = `${Math.random() * 100}%`;
-    el.style.top = `${Math.random() * 100}%`;
-    el.style.fontSize = `${1.5 + Math.random() * 2.5}rem`;
-    el.style.setProperty('--duration', `${15 + Math.random() * 15}s`);
-    el.style.setProperty('--delay', `${Math.random() * -20}s`);
+    
+    wrapper.style.left = `${Math.random() * 100}%`;
+    wrapper.style.top = `${Math.random() * 100}%`;
+    wrapper.style.setProperty('--duration', `${15 + Math.random() * 15}s`);
+    wrapper.style.setProperty('--delay', `${Math.random() * -20}s`);
     
     // Random movement vectors
     const moveX = (Math.random() - 0.5) * 200;
     const moveY = (Math.random() - 0.5) * 200;
     const rot = (Math.random() - 0.5) * 180;
     
-    el.style.setProperty('--move-x', `${moveX}px`);
-    el.style.setProperty('--move-y', `${moveY}px`);
-    el.style.setProperty('--rot', `${rot}deg`);
+    wrapper.style.setProperty('--move-x', `${moveX}px`);
+    wrapper.style.setProperty('--move-y', `${moveY}px`);
+    wrapper.style.setProperty('--rot', `${rot}deg`);
     
-    container.appendChild(el);
+    el.style.fontSize = `${1.2 + Math.random() * 2}rem`;
+    
+    wrapper.appendChild(el);
+    container.appendChild(wrapper);
+    
+    pieceElements.push({ wrapper, el });
   }
+
+  // Mouse repulsion effect
+  let mouseX = -1000;
+  let mouseY = -1000;
+  
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+  
+  function updateRepulsion() {
+    pieceElements.forEach(item => {
+      const rect = item.wrapper.getBoundingClientRect();
+      const pieceX = rect.left + rect.width / 2;
+      const pieceY = rect.top + rect.height / 2;
+      
+      const dx = pieceX - mouseX;
+      const dy = pieceY - mouseY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      
+      const maxDist = 200; // Repulsion radius
+      
+      if (distance < maxDist && distance > 0) {
+        // Calculate force: closer = stronger push
+        const force = (maxDist - distance) / maxDist;
+        const pushX = (dx / distance) * force * 100; // max push 100px
+        const pushY = (dy / distance) * force * 100;
+        
+        item.el.style.transform = `translate(${pushX}px, ${pushY}px)`;
+      } else {
+        item.el.style.transform = `translate(0px, 0px)`;
+      }
+    });
+    
+    requestAnimationFrame(updateRepulsion);
+  }
+  
+  requestAnimationFrame(updateRepulsion);
 });

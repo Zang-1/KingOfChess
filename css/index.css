@@ -576,13 +576,19 @@ a:hover {
   overflow: hidden;
 }
 
-.floating-piece {
+.floating-piece-wrapper {
   position: absolute;
-  font-size: 2rem;
   opacity: 0.04;
   animation: floatPiece var(--duration) ease-in-out infinite alternate;
   animation-delay: var(--delay);
+  will-change: transform;
+}
+
+.floating-piece {
+  display: block;
+  font-size: 2rem;
   color: var(--text-primary);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: transform;
 }
 
