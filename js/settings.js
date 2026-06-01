@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
   container.innerHTML = '';
   
   const piecesStr = ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'];
-  const count = 90; // Mật độ cờ dày hơn
+  const count = 35; // Giảm mật độ để bớt rối
   const particles = [];
   
   let mouseX = -1000;
@@ -248,14 +248,14 @@ document.addEventListener('DOMContentLoaded', () => {
       y: Math.random() * window.innerHeight,
       vx: 0,
       vy: 0,
-      driftX: (Math.random() - 0.5) * 0.8,
-      driftY: (Math.random() - 0.5) * 0.8,
+      driftX: (Math.random() - 0.5) * 0.3, // Di chuyển chậm lại
+      driftY: (Math.random() - 0.5) * 0.3,
       rot: Math.random() * 360,
-      rotV: (Math.random() - 0.5) * 1.5,
+      rotV: (Math.random() - 0.5) * 0.6, // Xoay chậm lại
       maxLife: 5000 + Math.random() * 2000, // 5s to 7s
       age: initial ? Math.random() * 5000 : 0,
       opacity: 0,
-      targetOpacity: 0.04 + Math.random() * 0.06,
+      targetOpacity: 0.02 + Math.random() * 0.02, // Mờ hơn
       state: initial ? 'alive' : 'fading_in'
     };
     if (initial) p.opacity = p.targetOpacity;

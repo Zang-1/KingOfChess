@@ -583,8 +583,9 @@ a:hover {
   color: var(--text-primary);
   pointer-events: none;
   will-change: transform, opacity;
-  /* Hardware acceleration */
+  /* Hardware acceleration and blending */
   -webkit-transform-style: preserve-3d;
+  filter: blur(1.5px);
 }
 
 .animated-bg {

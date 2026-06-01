@@ -24,7 +24,7 @@ const I18N = {
       'menu.hard': 'Khó',
       'menu.hard.desc': 'Đối thủ mạnh',
       'menu.play': 'Bắt đầu chơi',
-      'menu.footer': 'Được tạo với ❤️',
+      'menu.footer': 'Được tạo bởi Bao Giang',
 
       // Game
       'game.white': 'Trắng',
@@ -155,7 +155,7 @@ const I18N = {
       'menu.hard': 'Hard',
       'menu.hard.desc': 'Strong opponent',
       'menu.play': 'Start Game',
-      'menu.footer': 'Made with ❤️',
+      'menu.footer': 'Made by Bao Giang',
 
       // Game
       'game.white': 'White',
