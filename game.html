@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark" data-board="classic">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="King of Chess - Chơi cờ vua. Chế độ Người vs Người hoặc Người vs Máy.">
+  <title>King of Chess — Chơi cờ</title>
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♔</text></svg>">
+</head>
+<body>
+  <div class="game-page">
+    <div class="game-layout">
+      <!-- Board Container -->
+      <div class="board-container">
+        <!-- Top player card (Black) -->
+        <div class="player-card" id="player-black-card">
+          <div class="player-avatar black-avatar">♚</div>
+          <div class="player-details">
+            <div class="player-name" id="player-black-name" data-i18n="game.player2">Người chơi 2</div>
+            <div class="player-captured" id="captured-by-black"></div>
+          </div>
+          <div class="turn-indicator" id="turn-black" style="display:none"></div>
+        </div>
+
+        <!-- Chess Board -->
+        <div class="board-wrapper" style="margin: var(--space-sm) 0;">
+          <div class="chess-board" id="chess-board"></div>
+        </div>
+
+        <!-- Bottom player card (White) -->
+        <div class="player-card active-player" id="player-white-card">
+          <div class="player-avatar white-avatar">♔</div>
+          <div class="player-details">
+            <div class="player-name" id="player-white-name" data-i18n="game.player1">Người chơi 1</div>
+            <div class="player-captured" id="captured-by-white"></div>
+          </div>
+          <div class="turn-indicator" id="turn-white"></div>
+        </div>
+      </div>
+
+      <!-- Side Panel -->
+      <div class="side-panel">
+        <!-- Status Bar -->
+        <div class="status-bar" id="status-bar">
+          <span data-i18n="game.turn.white">Lượt của Trắng</span>
+        </div>
+
+        <!-- AI Thinking Indicator -->
+        <div class="ai-thinking" id="ai-thinking">
+          <span data-i18n="game.thinking">Máy đang suy nghĩ</span>
+          <div class="thinking-dots">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+
+        <!-- Move History -->
+        <div class="move-history-card">
+          <div class="move-history-title" data-i18n="game.moves">Lịch sử nước đi</div>
+          <div class="move-list" id="move-list"></div>
+        </div>
+
+        <!-- Game Controls -->
+        <div class="game-controls">
+          <button class="btn btn-ghost btn-sm" id="btn-undo">
+            ↩ <span data-i18n="game.undo">Hoàn tác</span>
+          </button>
+          <button class="btn btn-ghost btn-sm" id="btn-newgame">
+            🔄 <span data-i18n="game.newgame">Ván mới</span>
+          </button>
+          <button class="btn btn-danger btn-sm" id="btn-resign">
+            🏳️ <span data-i18n="game.resign">Đầu hàng</span>
+          </button>
+        </div>
+
+        <button class="btn btn-ghost w-full" id="btn-back-menu">
+          ← <span data-i18n="game.back">Về Menu</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Over Overlay -->
+  <div class="game-over-overlay" id="game-over-overlay">
+    <div class="game-over-card">
+      <div class="game-over-icon" id="game-over-icon">🏆</div>
+      <h2 class="game-over-title" id="game-over-title">Trắng thắng!</h2>
+      <p class="game-over-subtitle" id="game-over-subtitle">Chiếu hết</p>
+      <div class="game-over-actions">
+        <button class="btn btn-primary" id="btn-play-again">
+          🔄 <span data-i18n="game.playagain">Chơi lại</span>
+        </button>
+        <button class="btn btn-ghost" id="btn-back-menu-end">
+          ← <span data-i18n="game.back">Về Menu</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti Container -->
+  <div class="confetti-container" id="confetti-container"></div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/chess-engine.js"></script>
+  <script src="js/chess-ai.js"></script>
+  <script src="js/chess-ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark" data-board="classic">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="King of Chess - Trò chơi cờ vua trực tuyến với AI. Chơi cờ vua miễn phí, người vs người hoặc người vs máy.">
+  <title>King of Chess — Trò chơi Cờ Vua</title>
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/menu.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♔</text></svg>">
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="menu-bg"></div>
+  <div class="floating-pieces" id="floating-pieces"></div>
+
+  <div class="menu-page">
+    <!-- Hero Section -->
+    <div class="hero">
+      <div class="hero-crown">♔</div>
+      <h1 class="hero-title" data-i18n="menu.title">King of Chess</h1>
+      <p class="hero-subtitle" data-i18n="menu.subtitle">Trò chơi cờ vua</p>
+    </div>
+
+    <!-- Menu Container -->
+    <div class="menu-container">
+      <!-- PvP Mode -->
+      <button class="mode-btn mode-btn-pvp" id="btn-pvp">
+        <div class="mode-icon">👥</div>
+        <div class="mode-info">
+          <h3 data-i18n="menu.pvp">Người vs Người</h3>
+          <p data-i18n="menu.pvp.desc">Chơi với bạn bè trên cùng thiết bị</p>
+        </div>
+        <span class="mode-arrow">→</span>
+      </button>
+
+      <!-- PvC Mode -->
+      <button class="mode-btn mode-btn-pvc" id="btn-pvc">
+        <div class="mode-icon">🤖</div>
+        <div class="mode-info">
+          <h3 data-i18n="menu.pvc">Người vs Máy</h3>
+          <p data-i18n="menu.pvc.desc">Thử thách trí tuệ nhân tạo</p>
+        </div>
+        <span class="mode-arrow">→</span>
+      </button>
+
+      <!-- AI Difficulty Panel -->
+      <div class="difficulty-panel" id="difficulty-panel">
+        <div class="difficulty-content">
+          <div class="difficulty-title" data-i18n="menu.difficulty">Chọn cấp độ</div>
+          <div class="difficulty-options">
+            <button class="difficulty-btn" data-difficulty="easy">
+              <span class="diff-emoji">🌱</span>
+              <span class="diff-name" data-i18n="menu.easy">Dễ</span>
+              <span class="diff-desc" data-i18n="menu.easy.desc">Dành cho người mới</span>
+            </button>
+            <button class="difficulty-btn selected" data-difficulty="medium">
+              <span class="diff-emoji">⚔️</span>
+              <span class="diff-name" data-i18n="menu.medium">Trung bình</span>
+              <span class="diff-desc" data-i18n="menu.medium.desc">Thử thách vừa phải</span>
+            </button>
+            <button class="difficulty-btn" data-difficulty="hard">
+              <span class="diff-emoji">🔥</span>
+              <span class="diff-name" data-i18n="menu.hard">Khó</span>
+              <span class="diff-desc" data-i18n="menu.hard.desc">Đối thủ mạnh</span>
+            </button>
+          </div>
+          <div class="play-btn-container">
+            <button class="btn btn-accent btn-lg w-full" id="btn-play-ai" data-i18n="menu.play">Bắt đầu chơi</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secondary Actions -->
+      <div class="secondary-actions">
+        <button class="secondary-btn" id="btn-guide">
+          <span class="sec-icon">📖</span>
+          <span data-i18n="menu.guide">Hướng dẫn</span>
+        </button>
+        <button class="secondary-btn" id="btn-settings">
+          <span class="sec-icon">⚙️</span>
+          <span data-i18n="menu.settings">Cài đặt</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="menu-footer">
+      <p data-i18n="menu.footer">Được tạo với ❤️</p>
+    </div>
+  </div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/menu.js"></script>
+</body>
+</html>

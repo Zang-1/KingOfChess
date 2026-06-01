@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark" data-board="classic">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hướng dẫn chơi cờ vua - Học luật chơi, cách di chuyển quân cờ, và các nước đi đặc biệt.">
+  <title>King of Chess — Hướng dẫn chơi</title>
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/guide.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♔</text></svg>">
+</head>
+<body>
+  <div class="guide-page">
+    <!-- Back Button -->
+    <a href="index.html" class="btn btn-ghost btn-sm guide-back-btn">
+      ← <span data-i18n="guide.back">Quay lại</span>
+    </a>
+
+    <!-- Header -->
+    <div class="guide-header">
+      <h1 class="guide-title" data-i18n="guide.title">Hướng dẫn chơi cờ vua</h1>
+      <p class="guide-subtitle" data-i18n="guide.subtitle">Học cách chơi từ cơ bản đến nâng cao</p>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="guide-nav" id="guide-nav">
+      <button class="guide-nav-btn active" data-section="overview">
+        <span class="nav-icon">📋</span>
+        <span data-i18n="guide.nav.overview">Tổng quan</span>
+      </button>
+      <button class="guide-nav-btn" data-section="pieces">
+        <span class="nav-icon">♟</span>
+        <span data-i18n="guide.nav.pieces">Quân cờ</span>
+      </button>
+      <button class="guide-nav-btn" data-section="special">
+        <span class="nav-icon">⚡</span>
+        <span data-i18n="guide.nav.special">Nước đặc biệt</span>
+      </button>
+      <button class="guide-nav-btn" data-section="rules">
+        <span class="nav-icon">📜</span>
+        <span data-i18n="guide.nav.rules">Luật chơi</span>
+      </button>
+    </div>
+
+    <!-- Content Sections -->
+    <div class="guide-content">
+
+      <!-- === OVERVIEW === -->
+      <div class="guide-section active" id="section-overview">
+        <h2 class="section-title" data-i18n="guide.overview.title">Tổng quan cờ vua</h2>
+        <div class="overview-board-container">
+          <div class="mini-board" id="overview-board"></div>
+        </div>
+        <div class="overview-text">
+          <p data-i18n="guide.overview.p1">Cờ vua là trò chơi chiến thuật dành cho hai người chơi trên bàn cờ 8×8 với 64 ô xen kẽ sáng tối.</p>
+          <p data-i18n="guide.overview.p2">Mỗi bên bắt đầu với 16 quân: 1 Vua, 1 Hậu, 2 Xe, 2 Tượng, 2 Mã và 8 Tốt.</p>
+          <p data-i18n="guide.overview.p3">Mục tiêu là chiếu hết (checkmate) vua đối phương — tức là đặt vua vào thế bị tấn công mà không có cách thoát.</p>
+          <p data-i18n="guide.overview.p4">Trắng luôn đi trước. Hai bên luân phiên đi, mỗi lượt di chuyển một quân.</p>
+        </div>
+      </div>
+
+      <!-- === PIECES === -->
+      <div class="guide-section" id="section-pieces">
+        <h2 class="section-title" data-i18n="guide.nav.pieces">Quân cờ</h2>
+        <div class="piece-cards">
+          <!-- King -->
+          <div class="piece-card">
+            <div class="piece-card-header">
+              <span class="piece-card-icon">♔</span>
+              <div>
+                <div class="piece-card-title" data-i18n="guide.king.name">Vua</div>
+                <div class="piece-card-value" data-i18n="guide.king.value">Giá trị: Vô giá</div>
+              </div>
+            </div>
+            <p class="piece-card-description" data-i18n="guide.king.desc">Vua có thể di chuyển 1 ô theo mọi hướng (ngang, dọc, chéo). Vua không được di chuyển vào ô bị quân đối phương tấn công. Nếu vua bị chiếu hết, ván cờ kết thúc.</p>
+            <div class="mini-board" id="board-king"></div>
+          </div>
+          <!-- Queen -->
+          <div class="piece-card">
+            <div class="piece-card-header">
+              <span class="piece-card-icon">♕</span>
+              <div>
+                <div class="piece-card-title" data-i18n="guide.queen.name">Hậu</div>
+                <div class="piece-card-value" data-i18n="guide.queen.value">Giá trị: 9 điểm</div>
+              </div>
+            </div>
+            <p class="piece-card-description" data-i18n="guide.queen.desc">Hậu là quân mạnh nhất, có thể di chuyển theo mọi hướng (ngang, dọc, chéo) với số ô không giới hạn, miễn không bị chặn.</p>
+            <div class="mini-board" id="board-queen"></div>
+          </div>
+          <!-- Rook -->
+          <div class="piece-card">
+            <div class="piece-card-header">
+              <span class="piece-card-icon">♖</span>
+              <div>
+                <div class="piece-card-title" data-i18n="guide.rook.name">Xe</div>
+                <div class="piece-card-value" data-i18n="guide.rook.value">Giá trị: 5 điểm</div>
+              </div>
+            </div>
+            <p class="piece-card-description" data-i18n="guide.rook.desc">Xe di chuyển theo hàng ngang hoặc dọc với số ô không giới hạn. Xe rất mạnh khi kiểm soát hàng và cột mở.</p>
+            <div class="mini-board" id="board-rook"></div>
+          </div>
+          <!-- Bishop -->
+          <div class="piece-card">
+            <div class="piece-card-header">
+              <span class="piece-card-icon">♗</span>
+              <div>
+                <div class="piece-card-title" data-i18n="guide.bishop.name">Tượng</div>
+                <div class="piece-card-value" data-i18n="guide.bishop.value">Giá trị: 3 điểm</div>
+              </div>
+            </div>
+            <p class="piece-card-description" data-i18n="guide.bishop.desc">Tượng di chuyển theo đường chéo không giới hạn. Mỗi tượng chỉ có thể đi trên ô cùng màu. Hai tượng phối hợp rất mạnh.</p>
+            <div class="mini-board" id="board-bishop"></div>
+          </div>
+          <!-- Knight -->
+          <div class="piece-card">
+            <div class="piece-card-header">
+              <span class="piece-card-icon">♘</span>
+              <div>
+                <div class="piece-card-title" data-i18n="guide.knight.name">Mã</div>
+                <div class="piece-card-value" data-i18n="guide.knight.value">Giá trị: 3 điểm</div>
+              </div>
+            </div>
+            <p class="piece-card-description" data-i18n="guide.knight.desc">Mã di chuyển theo hình chữ L: 2 ô theo một hướng rồi 1 ô vuông góc. Mã là quân duy nhất có thể nhảy qua quân khác.</p>
+            <div class="mini-board" id="board-knight"></div>
+          </div>
+          <!-- Pawn -->
+          <div class="piece-card">
+            <div class="piece-card-header">
+              <span class="piece-card-icon">♙</span>
+              <div>
+                <div class="piece-card-title" data-i18n="guide.pawn.name">Tốt</div>
+                <div class="piece-card-value" data-i18n="guide.pawn.value">Giá trị: 1 điểm</div>
+              </div>
+            </div>
+            <p class="piece-card-description" data-i18n="guide.pawn.desc">Tốt tiến 1 ô về phía trước (hoặc 2 ô từ vị trí đầu). Tốt bắt quân theo đường chéo. Khi đến hàng cuối, tốt được phong cấp.</p>
+            <div class="mini-board" id="board-pawn"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- === SPECIAL MOVES === -->
+      <div class="guide-section" id="section-special">
+        <h2 class="section-title" data-i18n="guide.nav.special">Nước đi đặc biệt</h2>
+        <div class="special-moves-grid">
+          <!-- Castling -->
+          <div class="special-move-card">
+            <div class="special-move-title" data-i18n="guide.castling.title">🏰 Nhập thành (Castling)</div>
+            <p class="special-move-desc" data-i18n="guide.castling.desc">Nước đi đặc biệt giữa Vua và Xe. Vua di chuyển 2 ô về phía Xe, Xe nhảy qua Vua sang bên kia.</p>
+            <div class="mini-board" id="board-castling"></div>
+            <ul class="special-move-conditions" style="margin-top: var(--space-md);">
+              <li data-i18n="guide.castling.c1">Vua và Xe chưa từng di chuyển</li>
+              <li data-i18n="guide.castling.c2">Không có quân nào giữa Vua và Xe</li>
+              <li data-i18n="guide.castling.c3">Vua không đang bị chiếu</li>
+              <li data-i18n="guide.castling.c4">Vua không đi qua hoặc dừng ở ô bị tấn công</li>
+            </ul>
+          </div>
+          <!-- En Passant -->
+          <div class="special-move-card">
+            <div class="special-move-title" data-i18n="guide.enpassant.title">⚡ Bắt tốt qua đường (En Passant)</div>
+            <p class="special-move-desc" data-i18n="guide.enpassant.desc">Khi tốt đối phương tiến 2 ô từ vị trí đầu và đứng cạnh tốt của bạn, bạn có thể bắt nó bằng cách di chuyển chéo đến ô mà tốt đó đi qua.</p>
+            <div class="mini-board" id="board-enpassant"></div>
+            <ul class="special-move-conditions" style="margin-top: var(--space-md);">
+              <li data-i18n="guide.enpassant.c1">Tốt đối phương vừa tiến 2 ô ở nước đi trước</li>
+              <li data-i18n="guide.enpassant.c2">Tốt của bạn đứng cạnh tốt đối phương</li>
+              <li data-i18n="guide.enpassant.c3">Phải thực hiện ngay ở nước đi kế tiếp</li>
+            </ul>
+          </div>
+          <!-- Promotion -->
+          <div class="special-move-card">
+            <div class="special-move-title" data-i18n="guide.promotion.title">👑 Phong cấp (Promotion)</div>
+            <p class="special-move-desc" data-i18n="guide.promotion.desc">Khi tốt đến được hàng cuối cùng của bàn cờ (hàng 8 với Trắng, hàng 1 với Đen), nó phải được phong cấp thành quân khác.</p>
+            <div class="mini-board" id="board-promotion"></div>
+            <ul class="special-move-conditions" style="margin-top: var(--space-md);">
+              <li data-i18n="guide.promotion.c1">Có thể chọn: Hậu, Xe, Tượng, hoặc Mã</li>
+              <li data-i18n="guide.promotion.c2">Thường chọn Hậu vì là quân mạnh nhất</li>
+              <li data-i18n="guide.promotion.c3">Phong cấp là bắt buộc, không thể giữ nguyên Tốt</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- === RULES === -->
+      <div class="guide-section" id="section-rules">
+        <h2 class="section-title" data-i18n="guide.rules.title">Luật chơi & Kết thúc ván cờ</h2>
+        <div class="rules-list">
+          <div class="rule-card">
+            <div class="rule-icon">⚠️</div>
+            <div class="rule-content">
+              <h3 data-i18n="guide.rules.check.title">Chiếu (Check)</h3>
+              <p data-i18n="guide.rules.check.desc">Khi Vua bị quân đối phương tấn công, gọi là "chiếu". Người chơi phải giải chiếu bằng cách: di chuyển Vua, chặn đường tấn công, hoặc bắt quân đang chiếu.</p>
+            </div>
+          </div>
+          <div class="rule-card">
+            <div class="rule-icon">💀</div>
+            <div class="rule-content">
+              <h3 data-i18n="guide.rules.checkmate.title">Chiếu hết (Checkmate)</h3>
+              <p data-i18n="guide.rules.checkmate.desc">Khi Vua bị chiếu mà không có cách giải chiếu, ván cờ kết thúc. Bên bị chiếu hết thua cuộc.</p>
+            </div>
+          </div>
+          <div class="rule-card">
+            <div class="rule-icon">🤝</div>
+            <div class="rule-content">
+              <h3 data-i18n="guide.rules.stalemate.title">Hòa cờ - Bí (Stalemate)</h3>
+              <p data-i18n="guide.rules.stalemate.desc">Khi đến lượt đi nhưng không có nước đi hợp lệ nào, và Vua KHÔNG bị chiếu. Ván cờ kết thúc hòa.</p>
+            </div>
+          </div>
+          <div class="rule-card">
+            <div class="rule-icon">⚖️</div>
+            <div class="rule-content">
+              <h3 data-i18n="guide.rules.draw.title">Hòa cờ khác</h3>
+              <p data-i18n="guide.rules.draw.desc">Hòa do quy tắc 50 nước (50 nước đi liên tiếp không có bắt quân hay di chuyển tốt), hoặc hòa do không đủ quân chiếu hết (Vua vs Vua, Vua+Tượng vs Vua, Vua+Mã vs Vua).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/guide.js"></script>
+</body>
+</html>
