@@ -215,3 +215,34 @@ const Settings = {
 };
 
 window.Settings = Settings;
+
+// Add global floating pieces background
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('floating-pieces');
+  if (!container) return;
+  
+  const pieces = ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'];
+  const count = 20;
+
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('span');
+    el.className = 'floating-piece';
+    el.textContent = pieces[Math.floor(Math.random() * pieces.length)];
+    el.style.left = `${Math.random() * 100}%`;
+    el.style.top = `${Math.random() * 100}%`;
+    el.style.fontSize = `${1.5 + Math.random() * 2.5}rem`;
+    el.style.setProperty('--duration', `${15 + Math.random() * 15}s`);
+    el.style.setProperty('--delay', `${Math.random() * -20}s`);
+    
+    // Random movement vectors
+    const moveX = (Math.random() - 0.5) * 200;
+    const moveY = (Math.random() - 0.5) * 200;
+    const rot = (Math.random() - 0.5) * 180;
+    
+    el.style.setProperty('--move-x', `${moveX}px`);
+    el.style.setProperty('--move-y', `${moveY}px`);
+    el.style.setProperty('--rot', `${rot}deg`);
+    
+    container.appendChild(el);
+  }
+});

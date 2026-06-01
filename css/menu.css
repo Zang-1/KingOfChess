@@ -42,23 +42,7 @@
   animation: float 10s ease-in-out infinite reverse;
 }
 
-/* Floating chess pieces background */
-.floating-pieces {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
 
-.floating-piece {
-  position: absolute;
-  font-size: 2rem;
-  opacity: 0.06;
-  animation: float var(--duration) ease-in-out infinite;
-  animation-delay: var(--delay);
-  color: var(--text-primary);
-}
 
 /* ---- Hero Section ---- */
 .hero {

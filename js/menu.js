@@ -9,9 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   Settings.loadSounds();
   Settings.buildSettingsModal();
 
-  // Create floating chess pieces background
-  createFloatingPieces();
-
   // --- DOM Elements ---
   const btnPvP = document.getElementById('btn-pvp');
   const btnPvC = document.getElementById('btn-pvc');
@@ -65,25 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
   btnSettings.addEventListener('click', () => {
     Settings.openModal();
   });
-
-  // --- Floating Pieces ---
-  function createFloatingPieces() {
-    const container = document.getElementById('floating-pieces');
-    const pieces = ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'];
-    const count = 18;
-
-    for (let i = 0; i < count; i++) {
-      const el = document.createElement('span');
-      el.className = 'floating-piece';
-      el.textContent = pieces[Math.floor(Math.random() * pieces.length)];
-      el.style.left = `${Math.random() * 100}%`;
-      el.style.top = `${Math.random() * 100}%`;
-      el.style.fontSize = `${1.5 + Math.random() * 2.5}rem`;
-      el.style.setProperty('--duration', `${5 + Math.random() * 8}s`);
-      el.style.setProperty('--delay', `${Math.random() * 5}s`);
-      container.appendChild(el);
-    }
-  }
 
   // Keyboard shortcut: Enter to start game if difficulty panel is open
   document.addEventListener('keydown', (e) => {
