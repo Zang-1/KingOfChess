@@ -312,9 +312,12 @@ document.addEventListener('DOMContentLoaded', () => {
     particles.forEach((p, i) => {
       p.age += dt;
       
+      // Time to fade in/out: 3000ms
+      const fadeSpeed = (p.targetOpacity / 3000) * timeScale;
+      
       // Lifecycle
       if (p.state === 'fading_in') {
-        p.opacity += dt * 0.0005; // Fade in speed
+        p.opacity += fadeSpeed * 16.66; // 16.66ms per frame equivalent
         if (p.opacity >= p.targetOpacity) {
           p.opacity = p.targetOpacity;
           p.state = 'alive';
@@ -324,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
           p.state = 'fading_out';
         }
       } else if (p.state === 'fading_out') {
-        p.opacity -= dt * 0.0005;
+        p.opacity -= fadeSpeed * 16.66;
         if (p.opacity <= 0) {
           particles[i] = spawnParticle(p.el, false);
           return;
