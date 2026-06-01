@@ -177,6 +177,7 @@
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 2px;
+  color: var(--text-primary);
 }
 .mode-info p {
   font-size: 0.85rem;
@@ -260,6 +261,7 @@
   font-weight: 600;
   font-size: 0.9rem;
   display: block;
+  color: var(--text-primary);
 }
 .difficulty-btn .diff-desc {
   font-size: 0.75rem;

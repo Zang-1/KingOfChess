@@ -132,6 +132,7 @@
   font-family: var(--font-heading);
   font-size: 1.3rem;
   font-weight: 700;
+  color: var(--text-primary);
 }
 
 .piece-card-value {
@@ -211,6 +212,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-sm);
+  color: var(--text-primary);
 }
 
 .special-move-desc {
@@ -273,6 +275,7 @@
   font-weight: 700;
   font-size: 1.1rem;
   margin-bottom: var(--space-xs);
+  color: var(--text-primary);
 }
 .rule-content p {
   color: var(--text-secondary);
@@ -316,6 +319,7 @@
   margin-bottom: var(--space-xl);
   text-align: center;
   position: relative;
+  color: var(--text-primary);
 }
 .section-title::after {
   content: '';
