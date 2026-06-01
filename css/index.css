@@ -96,16 +96,16 @@
 
 /* ---- Light Theme ---- */
 [data-theme="light"] {
-  --bg-primary: #f5f5f7;
-  --bg-secondary: #ffffff;
-  --bg-tertiary: #e8eaed;
+  --bg-primary: #e2e8f0;
+  --bg-secondary: #f1f5f9;
+  --bg-tertiary: #cbd5e1;
   --bg-surface: rgba(0, 0, 0, 0.04);
-  --bg-surface-hover: rgba(0, 0, 0, 0.07);
-  --bg-surface-active: rgba(0, 0, 0, 0.10);
+  --bg-surface-hover: rgba(0, 0, 0, 0.08);
+  --bg-surface-active: rgba(0, 0, 0, 0.12);
 
-  --glass-bg: rgba(255, 255, 255, 0.75);
-  --glass-border: rgba(0, 0, 0, 0.10);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
 
   --color-primary: #6d28d9;
   --color-primary-hover: #7c3aed;
@@ -119,15 +119,15 @@
   --color-danger: #dc2626;
   --color-danger-glow: rgba(220, 38, 38, 0.15);
 
-  --text-primary: #111827;
-  --text-secondary: #374151;
-  --text-tertiary: #6b7280;
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
   --text-inverse: #f8fafc;
 
-  --border-color: rgba(0, 0, 0, 0.10);
-  --border-color-hover: rgba(0, 0, 0, 0.18);
+  --border-color: rgba(0, 0, 0, 0.12);
+  --border-color-hover: rgba(0, 0, 0, 0.2);
 
-  --scrollbar-track: #e8eaed;
+  --scrollbar-track: #cbd5e1;
   --scrollbar-thumb: #94a3b8;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
@@ -318,6 +318,7 @@ a:hover {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--glass-shadow);
+  transition: background var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
 /* ---- Modal ---- */
@@ -608,7 +609,35 @@ a:hover {
 .w-full { width: 100%; }
 .hidden { display: none !important; }
 
-/* ---- Background Particles ---- */
+/* ---- Background Particles & Animated BG ---- */
+.animated-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.animated-bg::before {
+  content: '';
+  position: absolute;
+  width: 60vmin;
+  height: 60vmin;
+  background: radial-gradient(circle, var(--color-primary-glow) 0%, transparent 70%);
+  top: -15vmin;
+  right: -15vmin;
+  animation: float 8s ease-in-out infinite;
+}
+.animated-bg::after {
+  content: '';
+  position: absolute;
+  width: 50vmin;
+  height: 50vmin;
+  background: radial-gradient(circle, var(--color-accent-glow) 0%, transparent 70%);
+  bottom: -10vmin;
+  left: -10vmin;
+  animation: float 10s ease-in-out infinite reverse;
+}
+
 .bg-particles {
   position: fixed;
   inset: 0;
