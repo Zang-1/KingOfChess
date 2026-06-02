@@ -80,6 +80,7 @@
   width: min(72vmin, 560px);
   height: min(72vmin, 560px);
   user-select: none;
+  touch-action: none;
 }
 
 .square {

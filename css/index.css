@@ -190,6 +190,7 @@ a:hover {
   overflow: hidden;
   user-select: none;
   white-space: nowrap;
+  touch-action: manipulation;
 }
 
 .btn::before {
