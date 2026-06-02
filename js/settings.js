@@ -224,8 +224,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Clear container
   container.innerHTML = '';
   
+  // Detect mobile
+  const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    || ('ontouchstart' in window && window.innerWidth < 900);
+  
   const piecesStr = ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'];
-  const count = 35; // Giảm mật độ để bớt rối
+  const count = isMobile ? 8 : 35;
   const particles = [];
   
   let mouseX = -1000;
@@ -248,76 +252,66 @@ document.addEventListener('DOMContentLoaded', () => {
       y: Math.random() * window.innerHeight,
       vx: 0,
       vy: 0,
-      driftX: (Math.random() - 0.5) * 0.3, // Di chuyển chậm lại
+      driftX: (Math.random() - 0.5) * 0.3,
       driftY: (Math.random() - 0.5) * 0.3,
       rot: Math.random() * 360,
-      rotV: (Math.random() - 0.5) * 0.6, // Xoay chậm lại
-      maxLife: 5000 + Math.random() * 2000, // 5s to 7s
+      rotV: (Math.random() - 0.5) * 0.6,
+      maxLife: 5000 + Math.random() * 2000,
       age: initial ? Math.random() * 5000 : 0,
       opacity: 0,
-      targetOpacity: 0.02 + Math.random() * 0.02, // Mờ hơn
+      targetOpacity: 0.02 + Math.random() * 0.02,
       state: initial ? 'alive' : 'fading_in'
     };
     if (initial) p.opacity = p.targetOpacity;
     return p;
   }
   
-  // Track mouse
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  });
-  
-  document.addEventListener('touchmove', (e) => {
-    if (e.touches.length > 0) {
-      mouseX = e.touches[0].clientX;
-      mouseY = e.touches[0].clientY;
-    }
-  }, { passive: true });
-  
-  // Shockwave effect
-  function createShockwave(x, y) {
-    particles.forEach(p => {
-      const dx = p.x - x;
-      const dy = p.y - y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 350 && dist > 0) {
-        // Push outward (shockwave force)
-        const force = (350 - dist) / 350;
-        p.vx += (dx / dist) * force * 40; // Push strength
-        p.vy += (dy / dist) * force * 40;
-      }
+  // Mouse/touch interaction only on desktop
+  if (!isMobile) {
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
     });
+    
+    function createShockwave(x, y) {
+      particles.forEach(p => {
+        const dx = p.x - x;
+        const dy = p.y - y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 350 && dist > 0) {
+          const force = (350 - dist) / 350;
+          p.vx += (dx / dist) * force * 40;
+          p.vy += (dy / dist) * force * 40;
+        }
+      });
+    }
+    
+    document.addEventListener('mousedown', (e) => createShockwave(e.clientX, e.clientY));
   }
   
-  document.addEventListener('mousedown', (e) => createShockwave(e.clientX, e.clientY));
-  document.addEventListener('touchstart', (e) => {
-    if (e.touches.length > 0) {
-      mouseX = e.touches[0].clientX;
-      mouseY = e.touches[0].clientY;
-      createShockwave(mouseX, mouseY);
-    }
-  }, { passive: true });
-  
   let lastTime = performance.now();
+  // On mobile, throttle to ~20fps to save battery and reduce jank
+  const minFrameInterval = isMobile ? 50 : 0;
   
   function update() {
     const now = performance.now();
     const dt = now - lastTime;
+    
+    if (dt < minFrameInterval) {
+      requestAnimationFrame(update);
+      return;
+    }
     lastTime = now;
     
-    // Safety check for massive delta times (e.g., tab switched)
     const timeScale = Math.min(dt / 16.66, 3);
     
     particles.forEach((p, i) => {
       p.age += dt;
       
-      // Time to fade in/out: 3000ms
       const fadeSpeed = (p.targetOpacity / 3000) * timeScale;
       
-      // Lifecycle
       if (p.state === 'fading_in') {
-        p.opacity += fadeSpeed * 16.66; // 16.66ms per frame equivalent
+        p.opacity += fadeSpeed * 16.66;
         if (p.opacity >= p.targetOpacity) {
           p.opacity = p.targetOpacity;
           p.state = 'alive';
@@ -334,33 +328,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
       
-      // Fluid repulsion
-      const dx = p.x - mouseX;
-      const dy = p.y - mouseY;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      
-      if (dist < 180 && dist > 0) {
-        const force = (180 - dist) / 180;
-        p.vx += (dx / dist) * force * 1.5 * timeScale;
-        p.vy += (dy / dist) * force * 1.5 * timeScale;
+      // Fluid repulsion (desktop only)
+      if (!isMobile) {
+        const dx = p.x - mouseX;
+        const dy = p.y - mouseY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if (dist < 180 && dist > 0) {
+          const force = (180 - dist) / 180;
+          p.vx += (dx / dist) * force * 1.5 * timeScale;
+          p.vy += (dy / dist) * force * 1.5 * timeScale;
+        }
       }
       
-      // Friction (Water-like damping)
       p.vx *= Math.pow(0.9, timeScale);
       p.vy *= Math.pow(0.9, timeScale);
       
-      // Update position
       p.x += (p.driftX + p.vx) * timeScale;
       p.y += (p.driftY + p.vy) * timeScale;
       p.rot += p.rotV * timeScale;
       
-      // Screen wrapping
       if (p.x < -100) p.x = window.innerWidth + 100;
       if (p.x > window.innerWidth + 100) p.x = -100;
       if (p.y < -100) p.y = window.innerHeight + 100;
       if (p.y > window.innerHeight + 100) p.y = -100;
       
-      p.el.style.transform = `translate(${p.x}px, ${p.y}px) rotate(${p.rot}deg)`;
+      p.el.style.transform = `translate3d(${p.x|0}px, ${p.y|0}px, 0) rotate(${p.rot|0}deg)`;
       p.el.style.opacity = p.opacity;
     });
     

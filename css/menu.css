@@ -345,3 +345,22 @@
     flex-direction: column;
   }
 }
+
+/* ---- Mobile Performance ---- */
+@media (max-width: 900px) and (pointer: coarse) {
+  .mode-btn,
+  .difficulty-content {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .mode-btn:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .hero-crown {
+    animation: none;
+    filter: none;
+  }
+}

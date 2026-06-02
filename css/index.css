@@ -654,3 +654,54 @@ a:hover {
     font-size: 1rem;
   }
 }
+
+/* ---- Mobile Performance ---- */
+@media (max-width: 900px) and (pointer: coarse) {
+  /* Remove expensive blur filters on mobile */
+  .floating-piece-js {
+    filter: none !important;
+    -webkit-transform-style: flat;
+    transform-style: flat;
+  }
+
+  /* Replace backdrop-filter with solid semi-transparent bg */
+  .glass-card,
+  .player-card,
+  .move-history-card,
+  .status-bar,
+  .ai-thinking,
+  .difficulty-content,
+  .modal {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Disable animated background blurs on mobile */
+  .animated-bg::before,
+  .animated-bg::after {
+    animation: none;
+    opacity: 0.5;
+  }
+
+  /* Reduce bg-particles */
+  .bg-particles {
+    display: none;
+  }
+
+  /* Simplify button hover effects */
+  .btn::before {
+    display: none;
+  }
+
+  /* Disable non-essential animations */
+  .mode-btn:hover {
+    transform: none;
+  }
+  .secondary-btn:hover {
+    transform: none;
+  }
+  .btn-primary:hover,
+  .btn-accent:hover {
+    transform: none;
+  }
+}

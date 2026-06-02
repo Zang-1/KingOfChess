@@ -32,9 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let isDragging = false;
   let dragPiece = null;
   let dragFrom = null;
+  let dragSize = 0;
   let promotionPending = null; // {fromRow, fromCol, toRow, toCol}
   let gameOver = false;
   let aiThinking = false;
+
+  // Detect mobile
+  const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    || ('ontouchstart' in window && window.innerWidth < 900);
 
   // --- DOM Elements ---
   const boardEl = document.getElementById('chess-board');
@@ -343,14 +348,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Create dragging clone
     dragPiece = pieceEl.cloneNode(true);
     dragPiece.classList.add('dragging');
-    const size = pieceEl.offsetWidth;
-    dragPiece.style.width = size + 'px';
-    dragPiece.style.height = size + 'px';
-    dragPiece.style.left = (x - size / 2) + 'px';
-    dragPiece.style.top = (y - size / 2) + 'px';
+    dragSize = pieceEl.offsetWidth; // Cache size once
+    dragPiece.style.width = dragSize + 'px';
+    dragPiece.style.height = dragSize + 'px';
     dragPiece.style.display = 'flex';
     dragPiece.style.alignItems = 'center';
     dragPiece.style.justifyContent = 'center';
+    // Use translate3d for GPU acceleration
+    dragPiece.style.left = '0';
+    dragPiece.style.top = '0';
+    dragPiece.style.transform = `translate3d(${x - dragSize / 2}px, ${y - dragSize / 2}px, 0) scale(1.2)`;
     document.body.appendChild(dragPiece);
 
     // Hide original
@@ -359,18 +366,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('mousemove', (e) => {
     if (!isDragging || !dragPiece) return;
-    const size = dragPiece.offsetWidth;
-    dragPiece.style.left = (e.clientX - size / 2) + 'px';
-    dragPiece.style.top = (e.clientY - size / 2) + 'px';
+    dragPiece.style.transform = `translate3d(${e.clientX - dragSize / 2}px, ${e.clientY - dragSize / 2}px, 0) scale(1.2)`;
   });
 
   document.addEventListener('touchmove', (e) => {
     if (!isDragging || !dragPiece) return;
     e.preventDefault();
     const touch = e.touches[0];
-    const size = dragPiece.offsetWidth;
-    dragPiece.style.left = (touch.clientX - size / 2) + 'px';
-    dragPiece.style.top = (touch.clientY - size / 2) + 'px';
+    dragPiece.style.transform = `translate3d(${touch.clientX - dragSize / 2}px, ${touch.clientY - dragSize / 2}px, 0) scale(1.2)`;
   }, { passive: false });
 
   function endDrag(x, y) {
@@ -567,8 +570,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function createConfetti() {
     const container = document.getElementById('confetti-container');
     const colors = ['#7c3aed', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#8b5cf6'];
+    const count = isMobile ? 30 : 80;
 
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < count; i++) {
       const confetti = document.createElement('div');
       confetti.className = 'confetti';
       confetti.style.left = Math.random() * 100 + '%';
