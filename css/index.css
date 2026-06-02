@@ -586,6 +586,7 @@ a:hover {
   will-change: transform, opacity;
   /* Hardware acceleration and blending */
   -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
   filter: blur(1.5px);
 }
 
